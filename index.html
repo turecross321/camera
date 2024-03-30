@@ -12,14 +12,18 @@
 
         const websocket_url = "ws://" + ip + ":6969";
 
-        try {
-          let socket = new WebSocket(websocket_url, "protocolOne");
-          controlParent.hidden = true;
+        controlParent.hidden = true;
 
-          socket.onmessage = function (event) {
-            image.src = "data:image/jpeg;base64," + event.data;
-          };
-        } catch (error) {
+        let socket = new WebSocket(websocket_url, "protocolOne");
+
+        socket.onmessage = function (event) {
+          image.src = "data:image/jpeg;base64," + event.data;
+        };
+
+        socket.onclose = disconnect;
+        socket.onerror = disconnect;
+
+        function disconnect(event) {
           controlParent.hidden = false;
         }
       }
