@@ -4,10 +4,10 @@ import asyncio
 from websockets.server import serve
 import time
 
-FPS = 10
-COMPRESSION_PERCENTAGE = 20
+FPS = 20
+COMPRESSION_PERCENTAGE = 30
 
-vid = cv2.VideoCapture(2)
+vid = cv2.VideoCapture(0)
 
 last_frame_base64_str = ""
 last_frame_capture_date = 0
@@ -36,7 +36,7 @@ async def video_feed_handler(websocket):
         await asyncio.sleep(1 / FPS)
 
 async def main():
-    async with serve(video_feed_handler, "localhost", 6969):
+    async with serve(video_feed_handler, "0.0.0.0", 6969):
         await asyncio.Future()
        
 

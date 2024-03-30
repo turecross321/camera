@@ -6,21 +6,33 @@
     <title>PRINTER MAN</title>
     <script>
       function connect() {
-        let ip = document.getElementById("ipInput").value;
-        let websocket_url = "ws://" + ip + ":6969";
-        let socket = new WebSocket(websocket_url, "protocolOne");
-        let image = document.getElementById("frame");
+        const ip = document.getElementById("ipInput").value;
+        const controlParent = document.getElementById("controlParent");
+        const image = document.getElementById("frame");
 
-        socket.onmessage = function (event) {
-          image.src = "data:image/jpeg;base64," + event.data;
-        };
+        const websocket_url = "ws://" + ip + ":6969";
+
+        try {
+          let socket = new WebSocket(websocket_url, "protocolOne");
+          controlParent.hidden = true;
+
+          socket.onmessage = function (event) {
+            image.src = "data:image/jpeg;base64," + event.data;
+          };
+        } catch (error) {
+          controlParent.hidden = false;
+        }
       }
     </script>
   </head>
   <body>
-    <label for="ipInput">ip address</label>
-    <input id="ipInput" />
-    <button onclick="connect()">connect</button>
-    <img id="frame" />
+    <div style="display: flex; flex-direction: column">
+      <div id="controlParent">
+        <label for="ipInput">ip address</label>
+        <input id="ipInput" />
+        <button onclick="connect()">connect</button>
+      </div>
+      <img id="frame" />
+    </div>
   </body>
 </html>
