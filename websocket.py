@@ -28,16 +28,16 @@ def get_video_frame() -> str:
     return last_frame_base64_str
 
 
-async def echo(websocket):
-    print(" Punk Detetcted...")
+async def video_feed_handler(websocket):
+    print("New websocket connection")
     while True:
         frame = get_video_frame()
         await websocket.send(str(frame))
         await asyncio.sleep(1 / FPS)
 
 async def main():
-    async with serve(echo, "localhost", 6969):
-        await asyncio.Future()  # run forever
+    async with serve(video_feed_handler, "localhost", 6969):
+        await asyncio.Future()
        
 
 asyncio.run(main())

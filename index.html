@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PRINTER MAN</title>
+    <script>
+      let websocket_url = "ws://" + window.URL + ":6969";
+      let socket = new WebSocket(websocket_url, "protocolOne");
+      let image = undefined;
+
+      socket.onmessage = function (event) {
+        image ??= document.getElementById("frame");
+        image.src = "data:image/jpeg;base64," + event.data;
+      };
+    </script>
+  </head>
+  <body>
+    <img id="frame" />
+  </body>
+</html>
