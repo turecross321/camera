@@ -6,24 +6,29 @@
     <title>PRINTER MAN</title>
     <script>
       function connect() {
-        const ip = document.getElementById("ipInput").value;
+        const host = window.location.host;
         const controlParent = document.getElementById("controlParent");
         const image = document.getElementById("frame");
 
-        const websocket_url = "ws://" + ip + ":6969";
+        const websocket_url = "ws://" + host + "/video";
 
         controlParent.hidden = true;
 
-        let socket = new WebSocket(websocket_url, "protocolOne");
+        try {
+          let socket = new WebSocket(websocket_url, "protocolOne");
 
-        socket.onmessage = function (event) {
-          image.src = "data:image/jpeg;base64," + event.data;
-        };
+          socket.onmessage = function (event) {
+            image.src = "data:image/jpeg;base64," + event.data;
+          };
 
-        socket.onclose = disconnect;
-        socket.onerror = disconnect;
+          socket.onclose = disconnect;
+          socket.onerror = disconnect;
+        } catch (error) {
+          disconnect(error);
+        }
 
         function disconnect(event) {
+          console.log(event);
           controlParent.hidden = false;
         }
       }
@@ -32,8 +37,7 @@
   <body>
     <div style="display: flex; flex-direction: column">
       <div id="controlParent">
-        <label for="ipInput">ip address</label>
-        <input id="ipInput" />
+        <h1>yo pank</h1>
         <button onclick="connect()">connect</button>
       </div>
       <img id="frame" />
