@@ -10,7 +10,10 @@
         const controlParent = document.getElementById("controlParent");
         const image = document.getElementById("frame");
 
-        const websocket_url = "ws://" + host + "/video";
+        const websocket_prefix =
+          location.protocol == "https:" ? "wss://" : "ws://";
+
+        const websocket_url = websocket_prefix + host + "/video";
 
         controlParent.hidden = true;
 
